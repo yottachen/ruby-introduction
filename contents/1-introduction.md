@@ -47,7 +47,7 @@ irb(main):002:0> 1+2
 
 - a Package Manager
 - part of the standard library from Ruby version 1.9
-- 78,439 gems hosted on RubyGems.org on Jul 15, 2014
+- 11,000,493,016 gems hosted on RubyGems.org on 6 Dec, 2016
 - gem command
   - `$ gem search rspec`
   - `$ gem install rspec`
@@ -67,45 +67,40 @@ irb(main):002:0> 1+2
 - Each gem follows the same standard structure of code organization:
 
 ```bash
-% tree freewill
-freewill/
-├── bin/
-│   └── freewill
-├── lib/
-│   └── freewill.rb
-├── test/
-│   └── freewill_spec.rb
-├── README
+% tree
+.
 ├── Rakefile
-└── freewill.gemspec
+├── bin
+│   └── hola
+├── hola.gemspec
+├── lib
+│   ├── hola
+│   │   └── translator.rb
+│   └── hola.rb
+└── test
+    └── test_hola.rb
 ```
+The executable and the primary file in lib are named the same.
+A developer can easily jump in and call require 'hola' with no problems.
 
 ---
 
 # Rake
 
-- a Make-like program implemented in Ruby
-- written in the Ruby programming language and use Ruby syntax
-- part of the standard library from Ruby version 1.9 onward
+- A make-like build utility for Ruby
+- Written in the Ruby programming language and use Ruby syntax
+- Rakefiles are completely defined in standard Ruby syntax
+- Supports parallel execution of tasks
 
 ---
 
 ## rake command
 
 - `$ rake`
-
-  run the "default" task in the Rakefile
 - `$ rake -T`
-
-  Display a list of the major tasks and their comments
 - `$ rake -P`
-
-  Display a list of all tasks and their immediate prerequisites
 - `$ rake name`
-- `$ rake name[Wei,Zheng]`
-- `--rakelibdir rakelibdir (-R)`
-
-  Auto-import any .rake files in RAKELIBDIR. (default is 'rakelib')
+- `$ rake name[Hello,World]`
 
 ---
 
@@ -140,7 +135,7 @@ end
 
 ```ruby
 task :name, [:first_name, :last_name] do |t, args|
-  args.with_defaults(:first_name => "Xi", :last_name => "Qi")
+  args.with_defaults(:first_name => "Jin", :last_name => "Han")
   puts "First name is #{args.first_name}"
   puts "Last  name is #{args.last_name}"
 end
@@ -171,7 +166,7 @@ end
 
 namespace "samples" do
   task :test => "main:build" do
-    puts "samples test"
+    puts "Hello, my first rake task"
   end
 end
 ```
@@ -180,9 +175,9 @@ end
 
 # rbenv
 
-- use different rubies in a manner that won't mess with your existing ruby install
-- guarantee that your development environment matches production
-- letting you run multiple different rubies in seperate terminals concurrently
+- Powerful in development.
+- Rock-solid in production.
+- One thing well.
 
 ---
 
@@ -202,29 +197,18 @@ end
 ## Installation
 
 ```bash
+$ brew update
 $ brew install rbenv ruby-build
 ```
 Afterwards you'll still need to add eval "$(rbenv init -)" to your profile as stated in the caveats. You'll only ever have to do this once.
 
 ---
 
-### oh-my-zsh
-
-```bash
-$ subl ~/.zshrc
-```
-
-```
-plugins=(git sublime rbenv)
-```
-
----
-
 ## rbenv command
 
 - `$ rbenv install -l`
-- `$ rbenv install 2.1.2`
-- `$ rbenv local 2.1.2`
+- `$ rbenv install 2.3.1`
+- `$ rbenv local 2.3.1`
 - `$ rbenv rehash`
 
   Run this command after you install a new version of Ruby, or install a gem that provides commands
@@ -247,12 +231,15 @@ plugins=(git sublime rbenv)
 
 # Bundler
 
-- manage your application's     dependencies
-- tracking and installing the exact gems and versions that are needed
+- manage your application's dependencies
+- tracking and installing the exact gems and versions that are needed for all envs.
 
 ```bash
 $ gem install bundler
-$ bundle init
+$ bundle init #Generate a Gemfile with the default rubygems.org source
+$ bundle config https://gems.example.com/ user:password
+
+ or put in Gemfile: source "https://user:password@gems.example.com"
 ```
 
 ```bash
@@ -270,7 +257,10 @@ gem 'awesome_print'
 gem 'rails', '3.0.0.beta3'
 gem 'rack', '>=1.0'
 gem 'thin', '~>1.1'
-# gem 'thin', '>= 1.1', '< 1.2'
+# gem 'thin', '>= 1.1', '< 2.0'
+
+~> 2.0.3 is identical to >= 2.0.3 and < 2.1
+~> 2.1 is identical to >= 2.1 and < 3.0
 
 gem 'sinatra', :require => 'sinatra/base'
 gem 'capybare-webkit', :require => false
@@ -322,22 +312,11 @@ ensures that other developers on your app, as well as your deployment environmen
 
 ## bundle exec
 ```bash
-$ bundle exec rspec
+$ bundle exec rspec  #Execute a command in the context of the bundle
 ```
 
 >> rspec-core is not part of the bundle. Add it to Gemfile.
 
----
-
-### oh-my-zsh
-
-```bash
-$ subl ~/.zshrc
-```
-
-```
-plugins=(git sublime rbenv bundler)
-```
 ---
 
 # RSpec
